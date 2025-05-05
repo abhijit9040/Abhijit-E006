@@ -1,39 +1,19 @@
 const mongoose = require('mongoose');
-const authSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-   
-});
-
-const recipeSchema = new mongoose.Schema({
-    recipe:{
+const authschema = new mongoose.Schema({
+    name:{
        type: String,
        required:true
     },
-    ingredients:{
+    password:{
         type:String,
-        required:true
+       required:true
     },
-    steps:{
+    email:{
         type:String,
-        required:true
-    },
-    cookingTime:{
-       type:Number,
        required:true
     }
 })
-const auth = mongoose.model('auth', authSchema);
-const recipe = mongoose.model('recipe', recipeSchema)
+
+const auth = mongoose.model('auth', authschema);
+
 module.exports = auth;
-module.exports=recipe;

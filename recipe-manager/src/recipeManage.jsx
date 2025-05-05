@@ -1,80 +1,89 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function RecipeManage(){
-    const[recipe , setRecipe] = useState("");
-    const[Ingredients , setIngredients] = useState("");
-    const[Steps, setSteps] = useState("");
-    const[cookingTime , setcookingTime] = useState("");
-    
-    function recipeHandle(e){
+
+export default function RecipeManage() {
+    const navigate = useNavigate();
+    const [recipe, setRecipe] = useState("");
+    const [ingredients, setIngredients] = useState("");
+    const [steps, setSteps] = useState("");
+    const [cookingTime, setCookingTime] = useState("");
+
+    const handleSubmit = (e) => {
+        console.log(recipe, ingredients, steps, cookingTime);
+        
         e.preventDefault();
         axios.post("http://localhost:5000/recipeManage", {
-            recipe: recipe,
-            ingredients: Ingredients,
-            steps: Steps,
-            cookingTime: cookingTime
-        }).then((response) => {
-            console.log(response.data);
-            alert("Recipe added successfully!");
-            window.location.href = "/recipeManage";
-        }).catch((error) => {
-            console.error("Error adding recipe:", error.response?.data);
-            alert(error.response?.data?.error || "Failed to add recipe");
-        });
-    }
-    return (
-        <>
-        <form>
-            <div className="mb-3">
-                <label htmlFor="recipe" className="form-label">Recipe</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="recipe"
-                    value={recipe}
-                    onChange={(e) => setRecipe(e.target.value)}
-                    required
-                />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="Ingredients" className="form-label">Ingredients</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="Ingredients"
-                    value={Ingredients}
-                    onChange={(e) => setIngredients(e.target.value)}
-                    required
-                />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="Steps" className="form-label">Steps</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="Steps"
-                    value={Steps}
-                    onChange={(e) => setSteps(e.target.value)}
-                    required
-                />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="cookingTime" className="form-label">Cooking Time</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="cookingTime"
-                    value={cookingTime}
-                    onChange={(e) => setcookingTime(e.target.value)}
-                    required
-                />
-            </div>
-            <button type="submit" className="btn btn-primary" onClick={recipeHandle}>Add Recipe</button>
-            <button type="button" className="btn btn-secondary" onClick={() => window.location.href = "/recipeManage"}>Back</button>
+            recipe,
+            ingredients,
+            steps,
+            cookingTime
+        })
+            .then((response) => {
+                console.log(response.data);
+                alert("Recipe added successfully!");
+                navigate("/recipeManage");
+            })
+            .catch((error) => {
+                console.error("Error adding recipe:", error.response?.data);
+                alert(error.response?.data?.error || "Error adding recipe");
+            });
+    };
 
-        </form>
-        </>
-    )
+    return (
+        <div className="container mt-5">
+            <h2>Add Recipe</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label htmlFor="recipe" className="form-label">Recipe Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="recipe"
+                        value={recipe}
+                        onChange={(e) => setRecipe(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="ingredients" className="form-label">Ingredients</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="ingredients"
+                        value={ingredients}
+                        onChange={(e) => setIngredients(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="steps" className="form-label">Steps</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="steps"
+                        value={steps}
+                        onChange={(e) => setSteps(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="cookingTime" className="form-label">Cooking Time</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="cookingTime"
+                        value={cookingTime}
+                        onChange={(e) => 
+                            setCookingTime(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">Add Recipe</button>
+            </form>
+        </div>
+    );
 }
+
+

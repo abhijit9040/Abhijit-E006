@@ -7,6 +7,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+mongoose.connect("mongo_url")
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
 app.post('/recipeManage', (req, res) => {
     const { recipe, ingredients, steps, cookingTime } = req.body;
     const Recipe= new recipeSchema({ recipe, ingredients, steps, cookingTime });
